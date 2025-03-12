@@ -1,18 +1,15 @@
-import { IsNotEmpty } from "class-validator";
+import { IsNotEmpty } from 'class-validator';
 
 export class CreateOrderDto {
-    @IsNotEmpty()
-    ghzinform : number
+  @IsNotEmpty()
+  ghzinform: number;
 
+  @IsNotEmpty()
+  sensity: number;
 
-    @IsNotEmpty()
-    sensity : number
+  @IsNotEmpty()
+  macroVariantSpeed: string;
 
-
-    @IsNotEmpty()
-    macroVariantSpeed : string
-
-
-    @IsNotEmpty()
-    macroVariantSpeedNoOneLine : string
+  @IsNotEmpty()
+  whichWeapon: string;
 }

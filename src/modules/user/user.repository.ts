@@ -8,6 +8,4 @@ export class UserRepository extends BaseRepository<User> {
   constructor(@InjectModel(User) model: typeof User) {
     super(model);
   }
-
-  
 }
