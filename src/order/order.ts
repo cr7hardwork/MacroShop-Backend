@@ -1,3 +1,4 @@
+import { IsPositive } from 'class-validator';
 import {
   AutoIncrement,
   Column,
@@ -17,10 +18,12 @@ export class Order extends Model<Order> {
   @Column(DataType.INTEGER)
   id: number;
 
+  @IsPositive()
   @Column({ allowNull: false })
   ghzinform: number;
 
-  @Column({ allowNull: false })
+  @IsPositive()
+  @Column({ allowNull: false, type: DataType.FLOAT })
   sensity: number;
 
   @Column({ allowNull: false })
