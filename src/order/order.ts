@@ -8,6 +8,7 @@ import {
   Model,
   ForeignKey,
   BelongsTo,
+  Max,
 } from 'sequelize-typescript';
 import { User } from 'src/modules/user/user';
 
@@ -19,11 +20,19 @@ export class Order extends Model<Order> {
   id: number;
 
   @IsPositive()
-  @Column({ allowNull: false })
+  @Max(500)
+  @Column({
+    allowNull: false,
+    validate: { min: 0, max: 500 },
+  })
   ghzinform: number;
 
   @IsPositive()
-  @Column({ allowNull: false, type: DataType.FLOAT })
+  @Column({
+    allowNull: false,
+    type: DataType.FLOAT,
+    validate: { min: 0 },
+  })
   sensity: number;
 
   @Column({ allowNull: false })
@@ -38,4 +47,7 @@ export class Order extends Model<Order> {
 
   @BelongsTo(() => User, { foreignKey: 'owner_id' })
   owner: User;
+
+  @Column(DataType.STRING)
+  url: string;
 }

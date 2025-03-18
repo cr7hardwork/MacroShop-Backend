@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Get,
   Post,
   UnauthorizedException,
   UseGuards,
@@ -10,10 +11,15 @@ import { GetUser } from 'src/decorators/get-user.decorator';
 import { IUserSession } from 'src/interfaces/user-session';
 import { OrderService } from './order.service';
 import { AuthGuard } from 'src/guards/auth.guard';
+import { Order } from './order';
+import { EmailService } from 'src/Email/Email.service';
 
 @Controller('order')
 export class OrderController {
-  constructor(private orderService: OrderService) {}
+  constructor(
+    private orderService: OrderService,
+    private emailService: EmailService,
+  ) {}
 
   @UseGuards(AuthGuard)
   @Post('')
@@ -26,5 +32,11 @@ export class OrderController {
     }
 
     await this.orderService.createOrder(createOrder, user.id);
+  }
+
+  @UseGuards(AuthGuard)
+  @Get('user-orders')
+  async getUserOrders(@GetUser() user: IUserSession): Promise<Order[]> {
+    return this.orderService.getUserOrders(user.id);
   }
 }

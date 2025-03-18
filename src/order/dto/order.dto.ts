@@ -1,10 +1,11 @@
-import { IsNotEmpty, IsPositive } from 'class-validator';
+import { IsNotEmpty, IsPositive, Max } from 'class-validator';
 
 export class CreateOrderDto {
   @IsPositive()
+  @Max(500)
   @IsNotEmpty()
   ghzinform: number;
- 
+
   @IsPositive()
   @IsNotEmpty()
   sensity: number;
@@ -14,4 +15,6 @@ export class CreateOrderDto {
 
   @IsNotEmpty()
   whichWeapon: string;
+
+  url: string;
 }

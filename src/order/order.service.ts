@@ -20,4 +20,8 @@ export class OrderService extends BaseService<Order> {
     });
     return order;
   }
+
+  public async getUserOrders(user_id: number): Promise<Order[]> {
+    return this.repository.getUserOrders(user_id);
+  }
 }
