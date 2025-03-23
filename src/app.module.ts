@@ -10,6 +10,7 @@ import { SequelizeOptions } from 'sequelize-typescript';
 import { OrderModule } from './order/order.module';
 import { ConfigModule } from '@nestjs/config';
 import { EmailModule } from './Email/Email.module';
+import { PaymentModule } from './Payment/Payment.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { EmailModule } from './Email/Email.module';
     AuthModule,
     OrderModule,
     EmailModule,
+    PaymentModule,
     JwtSharedModule,
   ],
   controllers: [AppController],
