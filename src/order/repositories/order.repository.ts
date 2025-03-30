@@ -22,4 +22,13 @@ export class OrderRepository extends BaseRepository<Order> {
       include: [User],
     });
   }
+
+  public async findOrderById(order_id: number): Promise<Order> {
+    return await this.model.findOne({
+      where: {
+        id: order_id,
+      },
+        });
+  }
 }
+
