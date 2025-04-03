@@ -28,7 +28,6 @@ export class OrderRepository extends BaseRepository<Order> {
       where: {
         id: order_id,
       },
-        });
+    });
   }
 }
-

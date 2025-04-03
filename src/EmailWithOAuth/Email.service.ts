@@ -15,7 +15,11 @@ export class EmailService {
       const REFRESH_TOKEN = this.configService.get<string>('REFRESH_TOKEN');
       const EMAIL_USER = this.configService.get<string>('EMAIL_USER');
 
-      const oAuth2Client = new google.auth.OAuth2(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI);
+      const oAuth2Client = new google.auth.OAuth2(
+        CLIENT_ID,
+        CLIENT_SECRET,
+        REDIRECT_URI,
+      );
       oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
       const accessToken = await oAuth2Client.getAccessToken();

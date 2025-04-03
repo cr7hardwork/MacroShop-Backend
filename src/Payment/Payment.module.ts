@@ -10,6 +10,6 @@ import { OrderRepository } from 'src/order/repositories/order.repository';
 @Module({
   imports: [SequelizeModule.forFeature([Order, OrderPayment])],
   controllers: [PaymentController],
-  providers: [PaymentService, PaymentRepository,OrderRepository],
+  providers: [PaymentService, PaymentRepository, OrderRepository],
 })
 export class PaymentModule {}
