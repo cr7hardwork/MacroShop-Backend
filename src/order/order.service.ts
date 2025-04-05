@@ -1,8 +1,9 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable} from '@nestjs/common';
 import { BaseService } from 'src/services/base.service';
 import { Order } from './order';
 import { CreateOrderDto } from './dto/order.dto';
 import { OrderRepository } from './repositories/order.repository';
+
 
 @Injectable()
 export class OrderService extends BaseService<Order> {
@@ -25,6 +26,7 @@ export class OrderService extends BaseService<Order> {
     return await this.repository.getUserOrders(user_id);
   }
 
+  
   public async getAll(): Promise<Order[]> {
     return await this.repository.findAll();
   }

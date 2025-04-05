@@ -5,6 +5,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { Request } from 'express';
 import { JWT_CONSTANTS } from 'src/config/jwt.constant';
 
 @Injectable()

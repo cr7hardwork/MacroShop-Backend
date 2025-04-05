@@ -1,8 +1,8 @@
 import { Column, DataType, Table, Unique, Model } from 'sequelize-typescript';
 
 export enum Role {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
+  ADMIN = 'admin',
+  USER = 'user',
 }
 
 @Table({ tableName: 'user' })

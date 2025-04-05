@@ -12,11 +12,13 @@ import { IUserSession } from 'src/interfaces/user-session';
 import { OrderService } from './order.service';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Order } from './order';
-import { AdminGuard } from 'src/guards/Admin.guard';
+import { Roles } from 'src/guards/roles.decorator';
+import { Role } from 'src/modules/user/user';
+import { RoleGuard } from 'src/guards/roles.guard';
 
 @Controller('order')
 export class OrderController {
-  constructor(private orderService: OrderService) {}
+  constructor(private orderService: OrderService) { }
 
   @UseGuards(AuthGuard)
   @Post('')
@@ -36,8 +38,8 @@ export class OrderController {
   async getUserOrders(@GetUser() user: IUserSession): Promise<Order[]> {
     return this.orderService.getUserOrders(user.id);
   }
-
-  @UseGuards(AuthGuard)
+  @Roles(Role.ADMIN)
+  @UseGuards(AuthGuard,RoleGuard)
   @Get('all')
   async getAllOrders(): Promise<Order[]> {
     return this.orderService.getAll();
