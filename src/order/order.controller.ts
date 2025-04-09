@@ -2,7 +2,9 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
+  Put,
   UnauthorizedException,
   UseGuards,
 } from '@nestjs/common';
@@ -15,6 +17,7 @@ import { Order } from './order';
 import { Roles } from 'src/guards/roles.decorator';
 import { Role } from 'src/modules/user/user';
 import { RoleGuard } from 'src/guards/roles.guard';
+import { updateOrderUrl } from './dto/updateOrder.dto';
 
 @Controller('order')
 export class OrderController {
@@ -44,4 +47,14 @@ export class OrderController {
   async getAllOrders(): Promise<Order[]> {
     return this.orderService.getAll();
   }
+
+
+  @Put(':id/update-url')
+  async updateUrl(
+    @Param('id') id: number,
+    @Body() updateUrl: updateOrderUrl,
+  ) {
+    return this.orderService.updateUrl(id, updateUrl);
+  }
+
 }

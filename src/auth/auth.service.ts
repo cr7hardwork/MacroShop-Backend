@@ -23,7 +23,7 @@ export class AuthService extends BaseService<User> {
     const user = await this.validateUser(email, password);
 
     if (user) {
-      const payload = { email: user.email, id: user.id };
+      const payload = { email: user.email, id: user.id , role : user.role };
       const accessToken = this.jwtService.sign(payload);
       return {
         accessToken,

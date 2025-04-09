@@ -3,6 +3,8 @@ import { BaseService } from 'src/services/base.service';
 import { Order } from './order';
 import { CreateOrderDto } from './dto/order.dto';
 import { OrderRepository } from './repositories/order.repository';
+import { updateOrderUrl } from './dto/updateOrder.dto';
+import { or } from 'sequelize';
 
 
 @Injectable()
@@ -29,5 +31,16 @@ export class OrderService extends BaseService<Order> {
   
   public async getAll(): Promise<Order[]> {
     return await this.repository.findAll();
+  }
+
+
+  public async updateUrl(id : number,updateUrl : updateOrderUrl) :Promise<Order>{
+     const order =  await this.repository.findById(id)
+     if(!order){
+      throw new Error('Order not found')
+     }
+     order.url = updateUrl.url
+     await order.save();
+     return order
   }
 }
