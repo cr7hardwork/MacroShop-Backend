@@ -14,10 +14,8 @@ import { IUserSession } from 'src/interfaces/user-session';
 import { OrderService } from './order.service';
 import { AuthGuard } from 'src/guards/auth.guard';
 import { Order } from './order';
-import { Roles } from 'src/guards/roles.decorator';
-import { Role } from 'src/modules/user/user';
-import { RoleGuard } from 'src/guards/roles.guard';
 import { updateOrderUrl } from './dto/updateOrder.dto';
+import { AdminGuard } from 'src/guards/admin.guard';
 
 @Controller('order')
 export class OrderController {
@@ -41,14 +39,13 @@ export class OrderController {
   async getUserOrders(@GetUser() user: IUserSession): Promise<Order[]> {
     return this.orderService.getUserOrders(user.id);
   }
-  @Roles(Role.ADMIN)
-  @UseGuards(AuthGuard,RoleGuard)
+  @UseGuards(AuthGuard,AdminGuard)
   @Get('all')
   async getAllOrders(): Promise<Order[]> {
     return this.orderService.getAll();
   }
 
-
+  @UseGuards(AuthGuard,AdminGuard)
   @Put(':id/update-url')
   async updateUrl(
     @Param('id') id: number,
