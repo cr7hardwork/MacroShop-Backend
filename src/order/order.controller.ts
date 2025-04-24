@@ -16,10 +16,11 @@ import { AuthGuard } from 'src/guards/auth.guard';
 import { Order } from './order';
 import { updateOrderUrl } from './dto/updateOrder.dto';
 import { AdminGuard } from 'src/guards/admin.guard';
+import { EmailService } from 'src/EmailWithOAuth/Email.service';
 
 @Controller('order')
 export class OrderController {
-  constructor(private orderService: OrderService) { }
+  constructor(private orderService: OrderService,private emailService : EmailService) { }
 
   @UseGuards(AuthGuard)
   @Post('')
@@ -51,7 +52,12 @@ export class OrderController {
     @Param('id') id: number,
     @Body() updateUrl: updateOrderUrl,
   ) {
-    return this.orderService.updateUrl(id, updateUrl);
+    const result =  await this.orderService.updateUrl(id, updateUrl);
+
+
+     await this.emailService.sendEmail();
+
+     return result
   }
 
 }

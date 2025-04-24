@@ -9,21 +9,22 @@ import { CONFIG_DB } from './config/config.db';
 import { SequelizeOptions } from 'sequelize-typescript';
 import { OrderModule } from './order/order.module';
 import { ConfigModule } from '@nestjs/config';
-import { EmailModule } from './Email/Email.module';
 import { PaymentModule } from './Payment/Payment.module';
+import { ReviewModule } from './review/review.module';
 
 @Module({
   imports: [
     SequelizeModule.forRoot(CONFIG_DB as SequelizeOptions),
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: './src/.env'
     }),
     UserModule,
     AuthModule,
     OrderModule,
-    EmailModule,
     PaymentModule,
     JwtSharedModule,
+    ReviewModule,
   ],
   controllers: [AppController],
   providers: [AppService],

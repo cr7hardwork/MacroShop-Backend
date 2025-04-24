@@ -4,7 +4,6 @@ import { Order } from './order';
 import { CreateOrderDto } from './dto/order.dto';
 import { OrderRepository } from './repositories/order.repository';
 import { updateOrderUrl } from './dto/updateOrder.dto';
-import { or } from 'sequelize';
 
 
 @Injectable()

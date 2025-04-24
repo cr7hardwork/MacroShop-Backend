@@ -1,52 +1,90 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import nodemailer from 'nodemailer';
+import * as nodemailer from 'nodemailer';
 import { google } from 'googleapis';
 
 @Injectable()
 export class EmailService {
-  constructor(private configService: ConfigService) {}
+  private readonly CLIENT_ID: string;
+  private readonly CLIENT_SECRET: string;
+  private readonly REDIRECT_URI: string;
+  private readonly REFRESH_TOKEN: string;
+  private readonly EMAIL_USER: string;
 
-  async sendEmail() {
+  constructor(private configService: ConfigService) {
+    this.CLIENT_ID = this.configService.get<string>('CLIENT_ID');
+    this.CLIENT_SECRET = this.configService.get<string>('CLIENT_SECRET');
+    this.REDIRECT_URI = this.configService.get<string>('REDIRECT_URI');
+    this.REFRESH_TOKEN = this.configService.get<string>('REFRESH_TOKEN');
+    this.EMAIL_USER = this.configService.get<string>('EMAIL_USER');
+  }
+
+  private async getAccessToken() {
     try {
-      const CLIENT_ID = this.configService.get<string>('CLIENT_ID');
-      const CLIENT_SECRET = this.configService.get<string>('CLIENT_SECRET');
-      const REDIRECT_URI = this.configService.get<string>('REDIRECT_URI');
-      const REFRESH_TOKEN = this.configService.get<string>('REFRESH_TOKEN');
-      const EMAIL_USER = this.configService.get<string>('EMAIL_USER');
-
       const oAuth2Client = new google.auth.OAuth2(
-        CLIENT_ID,
-        CLIENT_SECRET,
-        REDIRECT_URI,
+        this.CLIENT_ID,
+        this.CLIENT_SECRET,
+        this.REDIRECT_URI,
       );
-      oAuth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
+
+      oAuth2Client.setCredentials({ refresh_token: this.REFRESH_TOKEN });
 
       const accessToken = await oAuth2Client.getAccessToken();
+      if (!accessToken.token) {
+        throw new Error('Access token not received');
+      }
 
-      const transporter = nodemailer.createTransport({
+      return accessToken.token;
+    } catch (error) {
+      console.error('Error obtaining access token:', error);
+      throw new Error('Failed to get access token');
+    }
+  }
+
+  private async createTransporter() {
+    try {
+      const accessToken = await this.getAccessToken();  
+
+      return nodemailer.createTransport({
         service: 'gmail',
         auth: {
           type: 'OAuth2',
-          user: EMAIL_USER,
-          clientId: CLIENT_ID,
-          clientSecret: CLIENT_SECRET,
-          refreshToken: REFRESH_TOKEN,
-          accessToken: accessToken.token,
+          user: this.EMAIL_USER,
+          clientId: this.CLIENT_ID,
+          clientSecret: this.CLIENT_SECRET,
+          refreshToken: this.REFRESH_TOKEN,
+          accessToken: accessToken,  
         },
       });
+    } catch (error) {
+      console.error('Error creating transporter:', error);
+      throw new Error('Failed to create email transporter');
+    }
+  }
 
+  private async sendMail(transporter: any) {
+    try {
       const mailOptions = {
-        from: EMAIL_USER,
-        to: 'nalbandyanvardges1993@gmail.com',
-        subject: 'Test Email with OAuth2',
-        text: 'Hello, this is a test email sent with OAuth2!',
+        from: this.EMAIL_USER,
+        to: '741230real@gmail.com',
+        subject: 'macro email',
+        text: 'Your macro is ready',
       };
 
       const result = await transporter.sendMail(mailOptions);
       console.log('Email sent:', result.messageId);
     } catch (error) {
       console.error('Error sending email:', error);
+      throw new Error('Failed to send email');
+    }
+  }
+
+  async sendEmail() {
+    try {
+      const transporter = await this.createTransporter();
+      await this.sendMail(transporter);
+    } catch (error) {
+      console.error('Error in sendEmail process:', error);
     }
   }
 }
