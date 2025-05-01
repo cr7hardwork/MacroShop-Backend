@@ -1,4 +1,4 @@
-import { IsPositive } from 'class-validator';
+import { IsPositive, Max, Min } from 'class-validator';
 import {
   AutoIncrement,
   Column,
@@ -8,7 +8,6 @@ import {
   Model,
   ForeignKey,
   BelongsTo,
-  Max,
 } from 'sequelize-typescript';
 import { User } from 'src/modules/user/user';
 
@@ -20,10 +19,11 @@ export class Order extends Model<Order> {
   id: number;
 
   @IsPositive()
+  @Min(0)  
   @Max(500)
   @Column({
     allowNull: false,
-    validate: { min: 0, max: 500 },
+    type: DataType.FLOAT,
   })
   ghzinform: number;
 
@@ -42,7 +42,7 @@ export class Order extends Model<Order> {
   whichWeapon: string;
 
   @ForeignKey(() => User)
-  @Column
+  @Column(DataType.INTEGER)
   owner_id: number;
 
   @BelongsTo(() => User, { foreignKey: 'owner_id' })

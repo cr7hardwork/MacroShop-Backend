@@ -9,7 +9,6 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { CreateOrderDto } from './dto/order.dto';
-import { GetUser } from 'src/decorators/get-user.decorator';
 import { IUserSession } from 'src/interfaces/user-session';
 import { OrderService } from './order.service';
 import { AuthGuard } from 'src/guards/auth.guard';
@@ -17,6 +16,7 @@ import { Order } from './order';
 import { updateOrderUrl } from './dto/updateOrder.dto';
 import { AdminGuard } from 'src/guards/admin.guard';
 import { EmailService } from 'src/EmailWithOAuth/Email.service';
+import { GetUser } from 'src/decorator/get-user.decorator';
 
 @Controller('order')
 export class OrderController {
@@ -28,10 +28,6 @@ export class OrderController {
     @Body() createOrder: CreateOrderDto,
     @GetUser() user: IUserSession,
   ): Promise<Order> {
-    if (!user) {
-      throw new UnauthorizedException('User not authenticated');
-    }
-
     return await this.orderService.createOrder(createOrder, user.id);
   }
 

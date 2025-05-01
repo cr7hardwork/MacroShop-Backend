@@ -15,7 +15,7 @@ export class ReviewService  extends BaseService<Reviews> {
      }
 
 
-    async createReview(username: string,text : string) : Promise<Reviews>{
-         return this.repository.createReview(username,text)
-    }
+     async createReview(id: number, text: string): Promise<Reviews> {
+        return this.repository.createReview(id, text);
+      }
 }

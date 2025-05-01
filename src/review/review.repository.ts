@@ -19,9 +19,9 @@ export class ReviewRepository extends BaseRepository<Reviews>{
   }
 
 
-  async createReview(username: string, text: string): Promise<Reviews> {
+  async createReview(user_id: number, text: string): Promise<Reviews> {
     const review = await this.model.create({
-      username,
+      user_id,
       text,
     });
     return review;

@@ -1,4 +1,5 @@
-import { AutoIncrement, Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { AutoIncrement, BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { User } from "src/modules/user/user";
 
 
 @Table({tableName : 'reviews',timestamps : true})
@@ -10,12 +11,15 @@ export class Reviews extends Model<Reviews>{
   id: number;
 
 
-  @Column
-  username: string;
+  @ForeignKey(() => User)
+  @Column(DataType.INTEGER)
+  user_id : number
 
-  @Column
+
+  @BelongsTo(() => User)
+  user : User
+
+  @Column(DataType.TEXT)
   text: string
 
-  @Column
-  createdAt: Date
 }
