@@ -6,10 +6,11 @@ import { Order } from 'src/order/order';
 import { OrderPayment } from './Payment';
 import { PaymentRepository } from './payment.repository';
 import { OrderRepository } from 'src/order/repositories/order.repository';
+import { ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [SequelizeModule.forFeature([Order, OrderPayment])],
   controllers: [PaymentController],
-  providers: [PaymentService, PaymentRepository, OrderRepository],
+  providers: [PaymentService, PaymentRepository, OrderRepository,ConfigService],
 })
 export class PaymentModule {}

@@ -18,4 +18,9 @@ export class PaymentRepository extends BaseRepository<OrderPayment> {
       status,
     });
   }
+
+ 
+  async updateStatusByOrderId(order_id: number, status: PaymentStatus) {
+    return this.model.update({ status }, { where: { order_id } });
+  }
 }

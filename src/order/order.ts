@@ -50,4 +50,11 @@ export class Order extends Model<Order> {
 
   @Column(DataType.STRING)
   url: string;
+
+  @Column({
+    type: DataType.ENUM('pending', 'updated'),
+    allowNull: false,
+    defaultValue: 'pending',
+  })
+  updated: 'pending' | 'updated';
 }

@@ -39,6 +39,7 @@ export class OrderService extends BaseService<Order> {
       throw new Error('Order not found')
      }
      order.url = updateUrl.url
+     order.updated ='updated'
      await order.save();
      return order
   }
